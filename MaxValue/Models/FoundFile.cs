@@ -8,7 +8,7 @@ using MaxValue.Interfaces;
 
 namespace MaxValue.Models
 {
-    internal class FoundFile : IPropertiesProvider
+    internal class FoundFile : IObjPropertiesProvider
     {
         private string _fileName;
         private float _fileValue;

@@ -18,10 +18,11 @@
 // См: Ниже
 
 using MaxValue;
+using MaxValue.Interfaces;
 using MaxValue.Models;
 internal class Program
 {
-    static List<FoundFile> FoundFilesList = new List<FoundFile>();
+    static List<IObjPropertiesProvider> FoundFilesList = new List<IObjPropertiesProvider>();
 
     private static void Main(string[] args)
     {
@@ -41,7 +42,7 @@ internal class Program
             FoundFilesList.Clear();
             collector.CollectFiles(rootPath);
             // Вывод максимального значения в коллекции.
-            // Здесь используется поле value класса FoundFile, туда прописываются размеры файла, но можно писать и другие значения
+            // Здесь используется поле value класса FoundFile, прописываются размеры файла, но можно писать и другие значения
             DisplayConclusion();
         }
         catch (Exception ex)
@@ -50,18 +51,6 @@ internal class Program
         }
 
     }
-
-    private static void DisplayConclusion()
-    {
-        Console.WriteLine("------------------------------------------------------------------------");
-        Console.WriteLine("Поиск завершен");
-        Console.WriteLine($"Обнаружено файлов: {FoundFilesList.Count} ");
-        Console.WriteLine("");
-        FoundFile? maxFile = FoundFilesList.MaxValue(x => x.GetValue());
-        if (maxFile is not null)
-            Console.WriteLine($"Файл с максимальным значением: {maxFile.GetName()}, значение: {maxFile.GetValue():0.000}");
-    }
-
     private static void OnFileFound(object? sender, FileArgs e)
     {
         FoundFile foundFile = new FoundFile(e.FilePath);
@@ -72,4 +61,16 @@ internal class Program
         if (FoundFilesList.Count > 99)
             (sender as FilesCollector)?.CancellationToken.Cancel();
     }
+
+    private static void DisplayConclusion()
+    {
+        Console.WriteLine("------------------------------------------------------------------------");
+        Console.WriteLine("Поиск завершен");
+        Console.WriteLine($"Обнаружено файлов: {FoundFilesList.Count} ");
+        Console.WriteLine("");
+        IObjPropertiesProvider? maxValObj = FoundFilesList.MaxValue(x => x.GetValue());
+        if (maxValObj is not null)
+            Console.WriteLine($"Файл с максимальным значением: {maxValObj.GetName()}, значение: {maxValObj.GetValue():0.000}");
+    }
+
 }

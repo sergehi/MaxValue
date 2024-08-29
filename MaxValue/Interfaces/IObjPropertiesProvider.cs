@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MaxValue.Interfaces
 {
-    internal interface IPropertiesProvider
+    internal interface IObjPropertiesProvider
     {
         string GetName();
         float GetValue();
